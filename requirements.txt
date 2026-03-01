@@ -1,6 +1,10 @@
 discord.py==2.3.2
 aiohttp==3.9.1
-asyncio==3.4.3
 python-dotenv==1.0.0
+matplotlib==3.8.2
+numpy==1.26.2
 Pillow==10.1.0
 requests==2.31.0
+sqlite3-python==0.4.3
+pandas==2.1.4
+seaborn==0.13.0
