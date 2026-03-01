@@ -47,6 +47,7 @@ class Database:
         conn = self.get_connection()
         cursor = conn.cursor()
         
+        # Tabela de usuários
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS users (
                 user_id INTEGER,
@@ -62,6 +63,7 @@ class Database:
             )
         ''')
         
+        # Tabela de transações
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS transactions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -74,6 +76,7 @@ class Database:
             )
         ''')
         
+        # Tabela de lojas
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS shops (
                 shop_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -85,6 +88,7 @@ class Database:
             )
         ''')
         
+        # Tabela de itens
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS items (
                 item_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -98,6 +102,7 @@ class Database:
             )
         ''')
         
+        # Tabela de inventário
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS inventory (
                 user_id INTEGER,
@@ -108,6 +113,7 @@ class Database:
             )
         ''')
         
+        # Tabela de investimentos
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS investments (
                 investment_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -121,8 +127,10 @@ class Database:
             )
         ''')
         
+        # Tabela de missões diárias - CORRIGIDO (sem date() no PRIMARY KEY)
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS daily_missions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER,
                 guild_id INTEGER,
                 mission_type TEXT,
@@ -131,10 +139,11 @@ class Database:
                 reward INTEGER,
                 expires_at TIMESTAMP,
                 completed INTEGER DEFAULT 0,
-                PRIMARY KEY (user_id, guild_id, date(expires_at))
+                UNIQUE(user_id, guild_id, expires_at)
             )
         ''')
         
+        # Tabela de backups
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS backups (
                 backup_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -802,7 +811,6 @@ async def ranking(interaction: discord.Interaction):
     
     ax.text(0.5, 0.95, "🏆 TOP 10 MAIS RICOS", ha='center', fontsize=24, color='gold', weight='bold')
     
-    # Dados simulados
     for i in range(1, 11):
         y = 0.88 - (i * 0.08)
         medal = {1: "🥇", 2: "🥈", 3: "🥉"}.get(i, f"{i}.")
